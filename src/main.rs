@@ -1,0 +1,32 @@
+use std::fs::File;
+use std::io::{Read, Write};
+
+use camino::Utf8Path;
+use camino::Utf8PathBuf;
+use walkdir::WalkDir;
+
+fn main() -> std::io::Result<()> {
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() != 3 {
+        eprintln!("Usage: {} <input_directory> <output_file>", args[0]);
+        std::process::exit(1);
+    }
+
+    let input_path = Utf8PathBuf::from(&args[1]);
+    let output_path = Utf8PathBuf::from(&args[2]);
+    let mut output_file = File::create(&output_path)?;
+
+    for entry in WalkDir::new(&input_path) {
+        let entry = entry?;
+        let path = entry.path();
+        if path.is_file() {
+            writeln!(output_file, "{}\n", path.display())?;
+            let mut file = File::open(path)?;
+            let mut contents = String::new();
+            file.read_to_string(&mut contents)?;
+            write!(output_file, "{}", contents)?;
+        }
+    }
+
+    Ok(())
+}
