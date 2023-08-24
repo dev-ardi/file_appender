@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "easy way to concat a directory into a single file"
 license = "MIT"
+repository = "https://github.com/dev-ardi/file_appender"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
